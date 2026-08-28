@@ -5,7 +5,7 @@ import pytz
 import re
 
 app = Flask(__name__)
-app.secret_key = "HOSTING"
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", "change-this-secret-in-railway")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 USERS_ROOT = os.path.join(BASE_DIR, 'users')
@@ -19,11 +19,11 @@ import os
 from flask import jsonify, request, session, render_template, redirect, url_for
 
 # --- গ্লোবাল গিটহাব সেটিংস ---
-GITHUB_TOKEN = ''
-GITHUB_REPO = 'Manohar81020/-BOT-HOST-BOT'
+GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "").strip()
+GITHUB_REPO = os.environ.get("GITHUB_REPO", "").strip()
 GITHUB_URL = f"https://api.github.com/repos/{GITHUB_REPO}/contents/users.json"
 
-OPENROUTER_API_KEY = "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"
+OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "").strip()
 AI_MODEL = "meta-llama/llama-3-8b-instruct"
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
 # --- ডাটাবেস লজিক (Fixed) ---
@@ -243,8 +243,8 @@ def start_file(filename):
 
 # --- গিটহাব ব্যাকআপ লজিক (এটি সবার উপরে থাকবে) ---
 def auto_github_backup(username, filename, file_path):
-    GITHUB_TOKEN = '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' # টোকেন ঠিক থাকলে কাজ করবে
-    GITHUB_REPO = 'ronobiswas874-sketch/Hosting-files'
+    GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "").strip() # টোকেন ঠিক থাকলে কাজ করবে
+    GITHUB_REPO = os.environ.get("GITHUB_REPO", "").strip()
     
     github_path = f"users/{username}/{filename}"
     url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{github_path}"
@@ -502,8 +502,8 @@ def stats():
 @app.route('/setuser')
 def set_user_url():
     # গিটহাব কনফিগারেশন
-    GITHUB_TOKEN = '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'
-    GITHUB_REPO = 'ronobiswas874-sketch/Hosting-files'
+    GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "").strip()
+    GITHUB_REPO = os.environ.get("GITHUB_REPO", "").strip()
 
     u = request.args.get('u')
     p = request.args.get('p')
@@ -828,8 +828,8 @@ def delete_item(name):
     
     # --- [NEW] গিটহাব থেকে ডিলিট করার লজিক ---
     def delete_from_github(username, filename):
-        GITHUB_TOKEN = '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'
-        GITHUB_REPO = 'ronobiswas874-sketch/Hosting-files'
+        GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "").strip()
+        GITHUB_REPO = os.environ.get("GITHUB_REPO", "").strip()
         github_path = f"users/{username}/{filename}"
         url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{github_path}"
         headers = {"Authorization": f"token {GITHUB_TOKEN}", "Accept": "application/vnd.github.v3+json"}
@@ -885,8 +885,8 @@ def rename_item():
 import base64
 import requests
 
-GITHUB_TOKEN = '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' # আপনার টোকেন
-GITHUB_REPO = 'ronobiswas874-sketch/Hosting-files'
+GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "").strip() # আপনার টোকেন
+GITHUB_REPO = os.environ.get("GITHUB_REPO", "").strip()
 
 def sync_from_github():
     """সার্ভার স্টার্ট হওয়ার সময় গিটহাব থেকে সব ফাইল রিকভার করবে"""
@@ -971,8 +971,8 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=24)
 
 
 # --- গ্লোবাল গিটহাব সেটিংস (Updated) ---
-GITHUB_TOKEN = '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'
-GITHUB_REPO = 'ronobiswas874-sketch/Hosting-files'
+GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "").strip()
+GITHUB_REPO = os.environ.get("GITHUB_REPO", "").strip()
 GITHUB_URL = f"https://api.github.com/repos/{GITHUB_REPO}/contents/users.json"
 
 def check_github_user(u_input, p_input):
@@ -1201,12 +1201,12 @@ def upload_file():
 
 
 # --- সিকিউরিটি কি সেট করুন ---
-ADMIN_SECRET_KEY = "SHADOW-X-MODS" # আপনার পছন্দমতো কি পরিবর্তন করে নিন
+ADMIN_SECRET_KEY = os.environ.get("ADMIN_SECRET_KEY", "").strip()
 
 # --- নির্দিষ্ট ইউজার ডিলিট করার রুট ---
 @app.route('/remove_user/<username>')
 def remove_user(username):
-    # ইউআরএল থেকে কি চেক করা হচ্ছে (যেমন: /remove_user/shadow?key=SHADOW-X-MODS)
+    # URL query key must match ADMIN_SECRET_KEY from Railway Variables.
     key = request.args.get('key')
     if key != ADMIN_SECRET_KEY:
         return jsonify({"status": "error", "msg": "Unauthorized! Wrong Admin Key. 😡"}), 403
@@ -1231,7 +1231,7 @@ def remove_user(username):
 # --- সব ইউজার ডিলিট করার রুট ---
 @app.route('/remove_all')
 def remove_all_users():
-    # ইউআরএল থেকে কি চেক করা হচ্ছে (যেমন: /remove_all?key=SHADOW-X-MODS)
+    # URL query key must match ADMIN_SECRET_KEY from Railway Variables.
     key = request.args.get('key')
     if key != ADMIN_SECRET_KEY:
         return jsonify({"status": "error", "msg": "Unauthorized Access! 🚫"}), 403
@@ -1261,7 +1261,7 @@ from flask import Flask, render_template_string, request, jsonify, session, redi
 
 
 # 🚀 Security & Database
-ADMIN_SECRET_KEY = "SHADOW-X-MODS"
+ADMIN_SECRET_KEY = os.environ.get("ADMIN_SECRET_KEY", "").strip()
 notifications_db = []
 
 ADMIN_HTML = """
