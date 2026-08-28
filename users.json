@@ -7,14 +7,7 @@
     "status": "active",
 
     "memory": "9999999999999999999MB"
- "disk": 1073741824
-  },
-  "newuser": {
-  "p": "NewPassword123!",
-  "status": "active",
-  "memory": "999999GB",
-  "disk": 1073741824
-}
-
+ 
+  }
 
 }
