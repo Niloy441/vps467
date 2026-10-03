@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadow Hᴏꜱᴛ v3.1 ⚡ Pᴏᴡᴇʀᴇ BY Ꭼʟ𝓲ᴛ𝒆 ꫝρ𝓲 ⸙</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <style>
+        body { 
+            background-color: #07080c; 
+            color: #f3f4f6; 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .pt-bg-panel { background-color: #0e111a; }
+        .pt-border { border-color: #1b2030; }
+        
+        .pt-btn-magenta { 
+            background: linear-gradient(135deg, #d946ef 0%, #a855f7 100%);
+            box-shadow: 0 4px 14px rgba(217, 70, 239, 0.3);
+        }
+        .pt-btn-magenta:hover {
+            background: linear-gradient(135deg, #e879f9 0%, #c084fc 100%);
+        }
+        .pt-btn-red { background-color: #ef4444; }
+        
+        .pt-btn-blue {
+            background: linear-gradient(135deg, #1a4fcc 0%, #3b82f6 100%);
+            box-shadow: 0 4px 14px rgba(26, 79, 204, 0.3);
+            color: #ffffff;
+        }
+        .pt-btn-blue:hover {
+            background: linear-gradient(135deg, #2a64eb 0%, #60a5fa 100%);
+        }
+        
+        #logs, #logs div, #logs span {
+            font-family: 'Fira Code', monospace !important;
+            font-size: 13px !important;
+            line-height: 1.6 !important;
+            letter-spacing: 0.3px;
+        }        
+
+        .token.keyword { color: #fb923c !important; }
+        .token.operator, .token.selector { color: #22d3ee !important; }
+        .token.function, .token.attr-name { color: #facc15 !important; }
+        .token.string, .token.attr-value { color: #4ade80 !important; }
+        .token.comment { color: #64748b !important; }
+        .token.number { color: #22d3ee !important; }       /* numbers */
+        
+        
+
+        #editor, #highlight-code, .token, #highlight-layer code, #highlight-layer pre {
+            font-family: 'Fira Code', monospace !important;
+            font-size: 12px !important; 
+            line-height: 1.6 !important; 
+        }
+
+        #editModal .bg-\[\#12141c\] {
+            width: 100vw !important;
+            height: 100vh !important;
+            max-width: none !important;
+            border-radius: 0 !important;
+            background-color: #07080c !important;
+        }
+
+        .console-box { 
+            background: #040508; 
+            font-family: 'Fira Code', monospace !important; 
+            height: 350px; 
+            overflow-y: auto; 
+            padding: 20px; 
+            color: #4ade80; 
+            border: 1px solid #1b2030; 
+            font-size: 12px; 
+            white-space: pre-wrap; 
+            line-height: 1.5;
+        }
+        
+        .editor-container { 
+            position: relative; 
+            width: 100%; 
+            height: calc(100vh - 110px); 
+            background: #040508; 
+            overflow: hidden; 
+        }
+        
+        #highlight-layer, #editor {
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            padding: 16px !important; 
+            margin: 0 !important;
+            box-sizing: border-box;
+            white-space: pre !important; 
+            word-wrap: normal !important;
+            overflow: auto !important; 
+            border: none;
+            outline: none;
+        }
+
+        #editor {
+            z-index: 5; 
+            background: transparent !important;
+            color: transparent !important; 
+            caret-color: #ffffff !important; 
+            resize: none;
+            -webkit-text-fill-color: transparent;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        #highlight-layer {
+            z-index: 1;
+            pointer-events: none;
+            background: #040508;
+            color: #cbd5e1; 
+            scrollbar-width: none; 
+        }
+        
+        #highlight-layer::-webkit-scrollbar { display: none; }
+
+        #highlight-layer pre, #highlight-layer code {
+            background: transparent !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            display: block;
+        }
+
+        .token.tag, .token.builtin, .token.constant { color: #f472b6 !important; }
+        .token.variable, .token.property { color: #facc15 !important; }
+        .token.class-name, .token.parameter { color: #fb923c !important; }
+
+        #highlight-code { color: #f8f8f2 !important; text-shadow: none !important; }
+                
+        .status-card { 
+            background: #0e111a; 
+            border-left: 4px solid #a855f7; 
+            padding: 16px; 
+            border-radius: 8px; 
+            border: 1px solid #1b2030; 
+        }
+        .tab-active { 
+            color: #22d3ee; 
+            border-bottom: 2px solid #22d3ee; 
+            font-weight: 700; 
+        }
+        .file-selected { border: 1px solid #22d3ee; background: #0e111a; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .swal2-popup { 
+            font-size: 0.65rem !important; 
+            width: 14rem !important; 
+            padding: 0.5rem !important;
+            background: #12141c !important; 
+            color: #fff !important; 
+            border: 1px solid #1c212a !important; 
+            border-radius: 8px !important;
+        }
+        .swal2-title { font-size: 0.85rem !important; margin-bottom: 5px !important; }
+        .swal2-html-container { margin: 5px 0 !important; font-size: 0.75rem !important; }
+        .swal2-confirm, .swal2-cancel { padding: 4px 10px !important; font-size: 0.65rem !important; min-height: auto !important; }
+        .swal2-icon { transform: scale(0.5); margin: 5px auto !important; }
+        .swal2-input { height: 25px !important; padding: 0 5px !important; font-size: 0.75rem !important; margin: 10px auto !important; background: #0c0e14 !important; }
+        .swal2-actions { margin-top: 5px !important; }
+
+        .ai-text-content pre {
+            background: #040508;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px solid #1b2030;
+            margin: 12px 0;
+            overflow-x: auto;
+        }
+        .ai-text-content code {
+            font-family: 'Fira Code', monospace !important;
+            font-size: 12px !important;
+        }
+        .ai-text-content p { margin-bottom: 10px; }
+        
+        .copy-btn {
+            background: rgba(34, 211, 238, 0.1);
+            border: 1px solid rgba(34, 211, 238, 0.3);
+            color: #22d3ee;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .copy-btn:hover {
+            background: rgba(34, 211, 238, 0.2);
+            color: #67e8f9;
+        }
+    </style>
+</head>
+
+<body class="font-sans">
+
+    <header class="h-16 pt-bg-panel border-b pt-border flex items-center px-6 justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-[#12141c] border border-[#1a4fcc]/40 shadow-[0_0_15px_rgba(26,79,204,0.3)] relative overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-br from-[#1a4fcc]/20 to-transparent opacity-50"></div>
+                <img src="https://cdn-icons-png.flaticon.com/512/8759/8759045.png" alt="Bot Logo" class="w-8 h-8 z-10 filter drop-shadow-[0_0_5px_#1a4fcc] group-hover:scale-110 transition-transform duration-300">
+            </div>
+
+            <div class="flex flex-col">
+                <h1 class="text-xl font-black tracking-tighter uppercase leading-none text-white">
+                    Shadow <span class="text-[#1a4fcc]">Hᴏꜱᴛ𝙸ɴɢ</span>
+                </h1>
+                <div class="flex items-center gap-2 mt-1">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    <p class="text-[10px] text-gray-400 uppercase tracking-[2px]">Uꜱᴇʀ: {{ user }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-4">
+            <div id="searchContainer" class="hidden">
+                <input type="text" id="searchInput" oninput="filterFiles(this.value)" placeholder="Search files..." class="bg-[#0c0e14] border border-[#1c212a] px-2 py-1 rounded text-xs outline-none text-blue-400">
+            </div>
+            
+            <i class="fas fa-search cursor-pointer text-gray-400 hover:text-white transition-colors" onclick="toggleSearch()"></i>
+            
+            <div class="relative cursor-pointer group" onclick="showNotifications()">
+                <i class="fas fa-bell text-gray-400 group-hover:text-yellow-500 transition-colors"></i>
+                <span id="notif-count" class="hidden absolute -top-1 -right-1 bg-red-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full border border-[#12141c] animate-pulse">0</span>
+            </div>
+
+            <i class="fas fa-server cursor-pointer text-green-500"></i>
+            
+            <a href="/logout" title="Logout">
+                <i class="fas fa-sign-out-alt text-red-500 cursor-pointer hover:text-red-400 transition-colors"></i>
+            </a>
+        </div>
+    </header>
+
+    <nav class="h-14 pt-bg-panel border-b pt-border flex items-center px-6 space-x-8 overflow-x-auto no-scrollbar">
+        <button onclick="showTab('console')" id="t-console" class="pb-4 mt-4 text-sm tracking-wide tab-active uppercase">Cᴏɴꜱᴏʟᴇ</button>
+        <button onclick="showTab('files')" id="t-files" class="text-gray-400 pb-4 mt-4 text-sm tracking-wide uppercase">F𝙸ʟᴇꜱ</button>
+        <button onclick="showTab('ai')" id="t-ai" class="text-gray-400 pb-4 mt-4 text-sm tracking-wide uppercase">Aɢᴇɴᴛ</button>
+        <button onclick="showTab('github')" id="t-github" class="text-gray-400 pb-4 mt-4 text-sm tracking-wide uppercase">G𝙸ᴛʜᴜʙ</button>
+        <button onclick="showTab('activity')" id="t-activity" class="text-gray-400 pb-4 mt-4 text-sm tracking-wide uppercase">Aᴄᴛ𝚒ᴠ𝚒ᴛʏ</button>
+        <button onclick="showTab('requirements')" id="t-requirements" class="text-gray-400 pb-4 mt-4 text-sm tracking-wide uppercase">Rᴇqᴜ𝙸ʀᴇᴍᴇɴᴛꜱ</button>        
+        <button onclick="showTab('profile')" id="t-profile" class="text-gray-400 pb-4 mt-4 text-sm tracking-wide uppercase">Sᴇᴛᴛ𝚒ɴɢꜱ</button>
+    </nav>
+
+    <main class="container mx-auto p-4 mt-4">
+        
+        <div id="viewConsole">
+            <div class="grid grid-cols-3 gap-3 mb-4">
+                <button onclick="control('run')" class="pt-btn-blue py-3 rounded font-bold uppercase text-sm">Sᴛᴀrᴛ</button>
+                <button onclick="control('restart')" class="bg-gray-600 py-3 rounded font-bold uppercase text-sm">Rᴇꜱᴛᴀrᴛ</button>
+                <button onclick="control('stop')" class="pt-btn-red py-3 rounded font-bold uppercase text-sm">Sᴛᴏᴩ</button>
+            </div>
+
+            <div class="console-box rounded-t-lg" id="logs">[START] ʟᴏɢꜱ ᴄʟᴇᴀʀᴇᴅ ᴄʟ𝚒ᴄᴋ ᴛᴏ ꜱᴛᴀʀᴛ..</div>
+            <div class="relative mb-6">
+                <span class="absolute inset-y-0 left-3 flex items-center text-gray-500">»</span>
+                <input type="text" id="cmdInput" onkeydown="if(event.key==='Enter') sendCmd()" placeholder="root@SHADOW_VIP_OWNER:~$ type your command here..." class="w-full bg-[#12141c] border-x border-b pt-border p-3 pl-8 text-sm outline-none">
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                <div class="status-card" style="border-left-color: #3b82f6;">
+                    <p class="text-[10px] uppercase text-gray-500 font-bold">Aᴅᴅʀᴇꜱꜱ</p>
+                    <p class="text-[12px] font-bold text-white" id="server-address">161.118.184.118:15030</p>
+                </div>
+                <div class="status-card" style="border-left-color: #ef4444;">
+                    <p class="text-sm font-bold text-white" id="uptime">0h 0m 0s</p>
+                </div>
+                <div class="status-card" style="border-left-color: #1a4fcc;">
+                    <p class="text-[10px] uppercase text-gray-500 font-bold">Cpu Load</p>
+                    <p class="text-sm font-bold text-white" id="cpu">0.00%</p>
+                </div>
+                <div class="status-card" style="border-left-color: #9333ea;">
+                    <p class="text-[10px] uppercase text-gray-500 font-bold">Memory</p>
+                    <p class="text-sm font-bold text-white" id="ram">0 MiB</p>
+                </div>
+                <div class="status-card" style="border-left-color: #10b981;">
+                    <p class="text-[10px] uppercase text-gray-500 font-bold">Network (Inbound)</p>
+                    <p class="text-sm font-bold text-white" id="net_in">0.00 MiB</p>
+                </div>
+                <div class="status-card" style="border-left-color: #f59e0b;">
+                    <p class="text-[10px] uppercase text-gray-500 font-bold">Network (Outbound)</p>
+                    <p class="text-sm font-bold text-white" id="net_out">0.00 MiB</p>
+                </div>
+            </div>
+
+            <div class="space-y-4 mb-8">
+                <div class="pt-bg-panel border pt-border rounded-lg p-4">
+                    <h4 class="text-[11px] font-bold text-gray-400 uppercase mb-4">CPU Load Graph Analytics</h4>
+                    <div class="h-52 bg-[#0c0e14] rounded border border-gray-800/30 relative overflow-hidden">
+                        <canvas id="cpuChart" class="absolute inset-0"></canvas>
+                    </div>
+                </div>
+                <div class="pt-bg-panel border pt-border rounded-lg p-4">
+                    <h4 class="text-[11px] font-bold text-gray-400 uppercase mb-4">Memory consumption Analytics</h4>
+                    <div class="h-52 bg-[#0c0e14] rounded border border-gray-800/30 relative overflow-hidden">
+                        <canvas id="ramChart" class="absolute inset-0"></canvas>
+                    </div>
+                </div>
+                <div class="pt-bg-panel border pt-border rounded-lg p-4">
+                    <h4 class="text-[11px] font-bold text-gray-400 uppercase mb-4">Network bandwidth I/O Graphs</h4>
+                    <div class="h-52 bg-[#0c0e14] rounded border border-gray-800/30 relative overflow-hidden">
+                        <canvas id="netChart" class="absolute inset-0"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="viewFiles" class="hidden">
+            <div class="mb-4 flex justify-between items-center">
+                <span class="text-sm font-mono text-gray-500">/ Home / Container / <span id="currentPathDisplay" class="text-blue-400">/</span></span>
+                <div class="flex space-x-2">
+                    <button onclick="actionPrompt('folder')" class="bg-[#12141c] border border-[#1a4fcc]/40 px-4 py-2 rounded-lg text-xs text-white hover:bg-[#1a4fcc] transition-all duration-300 flex items-center gap-2">
+                        <i class="fas fa-folder-plus text-[#1a4fcc]"></i> Folder
+                    </button>
+                    <input type="file" id="fileInput" class="hidden" onchange="uploadFile()">
+                    <button onclick="document.getElementById('fileInput').click()" class="pt-btn-blue px-4 py-2 rounded-lg text-xs text-white flex items-center gap-2 transition-all">
+                        <i class="fas fa-upload"></i> Upload
+                    </button>
+                    <button onclick="actionPrompt('file')" class="pt-btn-blue px-4 py-2 rounded-lg text-xs text-white">
+                        <i class="fas fa-folder-plus"></i> New File
+                    </button>
+                </div>
+            </div>
+            <div class="pt-bg-panel border pt-border rounded-lg overflow-hidden">
+                <table class="w-full text-sm" id="fileTable">
+                    <thead>
+                        <tr class="h-10 border-b pt-border text-gray-500 uppercase text-[10px]">
+                            <th class="px-4 text-left">File Name</th>
+                            <th class="text-right px-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if current_path %}
+                            <tr class="h-12 border-b pt-border hover:bg-[#1a1d27] cursor-pointer" onclick="goBack()">
+                                <td class="px-4 font-mono text-yellow-500"><i class="fas fa-level-up-alt mr-2"></i> ..</td>
+                                <td></td>
+                            </tr>
+                        {% endif %}
+                        {% for file in files %}
+                        {% set ext = file.name.split('.')[-1].lower() %}
+                        <tr class="file-row h-12 border-b pt-border hover:bg-[#1a1d27] cursor-pointer" onclick="{% if file.is_dir %}window.location.href='/?path={{ file.rel_path }}'{% else %}setFile('{{ file.rel_path }}'){% endif %}">
+                            <td class="px-4 font-mono {% if file.is_dir %}text-yellow-500{% else %}text-blue-400{% endif %}">
+                                {% if file.is_dir %}
+                                    <i class="fas fa-folder mr-2"></i>
+                                    <span class="text-yellow-500">{{ file.name }}</span>
+                                {% elif ext=='py' %}
+                                    <i class="fab fa-python text-blue-400 mr-3"></i>
+                                    <span class="text-blue-400">{{ file.name }}</span>
+                                {% elif ext=='html' %}
+                                    <span class="inline-flex items-center">
+                                     <span class="bg-blue-500 text-white p-1 rounded-full flex items-center justify-center">
+                                         <i class="fas fa-globe"></i>
+                                    </span>
+                                    <span class="ml-2 text-blue-500">{{ file.name }}</span>
+                                </span>
+                                {% elif ext=='json' %}
+                                    <i class="fas fa-file-code text-green-500 mr-2"></i>
+                                    <span class="text-green-500">{{ file.name }}</span>
+                                {% elif ext=='js' %}
+                                    <i class="fab fa-js"></i>
+                                    <span class="text-yellow-300">{{ file.name }}</span>
+                                {% elif ext=='css' %}
+                                    <i class="fab fa-css3-alt mr-2 text-purple-500"></i>
+                                    <span class="text-purple-500">{{ file.name }}</span>
+                                {% elif ext == 'log' %}
+                                    <i class="fas fa-file-alt mr-2 text-gray-400"></i> <!-- Log file -->
+                                    <span class="text-white">{{ file.name }}</span>
+                                {% elif ext == 'bak' %}
+                                    <i class="fas fa-university text-gray-400 mr-2"></i> 
+                                    <span class="text-white">{{ file.name }}</span>
+                                {% elif ext == 'txt' %}
+                                    <i class="fas fa-scroll text-orange-500 mr-2"></i>
+                                    <span class="text-gray-400">{{ file.name }}</span>
+                                {% else %}
+                                    <i class="fas fa-file"></i>
+                                    <span class="text-white">{{ file.name }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-right px-4 space-x-4">
+                                {% if not file.is_dir %}
+                                    <a href="/download/{{ file.rel_path }}" onclick="event.stopPropagation();" class="text-green-500 hover:text-green-400"><i class="fas fa-download"></i></a>
+                                    <button onclick="event.stopPropagation(); editFile('{{file.rel_path}}')" class="text-gray-400 hover:text-white"><i class="fas fa-edit"></i></button>
+                                {% endif %}
+                                <button onclick="event.stopPropagation(); renameFile('{{file.rel_path}}')" class="text-gray-400 hover:text-white"><i class="fas fa-i-cursor"></i></button>
+                                <button onclick="event.stopPropagation(); deleteFile('{{file.rel_path}}')" class="text-red-500 hover:text-red-400"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="viewGithub" class="hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="pt-bg-panel border pt-border rounded-lg p-5 relative overflow-hidden group">
+                    <div class="absolute top-2 right-2 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="fas fa-lock text-3xl"></i>
+                    </div>
+                    <h4 class="text-xs font-bold text-blue-400 uppercase mb-4 flex items-center gap-2">
+                        <i class="fas fa-shield-alt"></i> Private Repository
+                    </h4>
+                    <div class="flex flex-col gap-3">
+                        <div>
+                            <label class="text-[9px] text-gray-500 uppercase font-bold block mb-1">Repo URL</label>
+                            <input type="text" id="pvtRepoUrl" placeholder="https://github.com/user/repo" 
+                                   class="w-full bg-[#0c0e14] border border-[#1c212a] px-3 py-2 rounded text-xs outline-none focus:border-blue-500 text-gray-200">
+                        </div>
+                        <div>
+                            <label class="text-[9px] text-gray-500 uppercase font-bold block mb-1">Access Token</label>
+                            <input type="password" id="pvtGhToken" placeholder="ghp_xxxxxxxxxxxx" 
+                                   class="w-full bg-[#0c0e14] border border-[#1c212a] px-3 py-2 rounded text-xs outline-none focus:border-blue-500 text-gray-200">
+                        </div>
+                        <button onclick="deployFromGithub('pvt')" class="w-full bg-blue-600 hover:bg-blue-500 py-3 rounded font-bold uppercase text-[10px] shadow-lg flex items-center justify-center gap-2 transition-transform active:scale-95">
+                            <i class="fas fa-cloud-download-alt"></i> Download File 
+                        </button>
+                    </div>
+                </div>
+
+                <div class="pt-bg-panel border pt-border rounded-lg p-5 relative overflow-hidden group">
+                    <div class="absolute top-2 right-2 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="fas fa-globe text-3xl"></i>
+                    </div>
+                    <h4 class="text-xs font-bold text-green-400 uppercase mb-4 flex items-center gap-2">
+                        <i class="fab fa-github"></i> Public Repository
+                    </h4>
+                    <div class="flex flex-col gap-3">
+                        <div>
+                            <label class="text-[9px] text-gray-500 uppercase font-bold block mb-1">Repo URL</label>
+                            <input type="text" id="pubRepoUrl" placeholder="https://github.com/user/repo" 
+                                   class="w-full bg-[#0c0e14] border border-[#1c212a] px-3 py-2 rounded text-xs outline-none focus:border-green-500 text-gray-200">
+                        </div>
+                        <div class="mt-2">
+                            <button onclick="deployFromGithub('pub')" class="w-full bg-green-600 hover:bg-green-500 py-3 rounded font-bold uppercase text-[10px] shadow-lg flex items-center justify-center gap-2 transition-transform active:scale-95">
+                                <i class="fas fa-rocket"></i> Download File 
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:col-span-2 pt-bg-panel border pt-border rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Deployment Status</h4>
+                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                    </div>
+                    <div id="ghStatus" class="bg-black/60 border border-white/5 rounded p-3 h-[100px] overflow-y-auto font-mono text-[10px] text-green-400/80">
+                        <p>> Ready for deployment...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="viewActivity" class="hidden">
+            <div id="activityContent" class="pt-bg-panel border pt-border rounded-lg min-h-[400px]">
+                <p class="p-10 text-center text-gray-500 animate-pulse text-[10px]">INITIALIZING ACTIVITY LOGS...</p>
+            </div>
+        </div>
+
+        <div id="viewRequirements" class="hidden">
+            <div id="requirementsContent" class="pt-bg-panel border pt-border rounded-lg min-h-[400px]">
+                <p class="p-10 text-center text-gray-500 animate-pulse text-[10px]">CHECKING DEPENDENCIES...</p>
+            </div>
+        </div>
+
+        <div id="viewAi" class="hidden">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 h-[calc(100vh-200px)] min-h-[450px] items-stretch">
+                <div class="md:col-span-3 pt-bg-panel border pt-border rounded-xl flex flex-col overflow-hidden h-full max-h-full contain-layout">
+                    <div class="bg-[#161b22] px-4 py-3 border-b pt-border flex items-center justify-between shrink-0 h-[45px]">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 bg-purple-500 rounded-full animate-ping"></span>
+                            <h3 class="text-xs font-bold text-purple-400 uppercase tracking-wider">Hᴏꜱᴛ𝚒ɴɢ Aɢᴇɴᴛ ᴠ𝟸.𝟾</h3>
+                        </div>
+                        <button onclick="clearAiChat()" class="text-gray-500 hover:text-red-400 text-xs uppercase font-bold"><i class="fas fa-eraser mr-1"></i> Clear</button>
+                    </div>
+                    
+                    <div id="aiChatLogs" class="flex-1 p-4 overflow-y-auto space-y-4 font-mono text-xs no-scrollbar bg-black/40 min-h-0 override-glitch-render content-visibility-auto">
+                        <div class="flex gap-3 max-w-[85%] bg-purple-600/10 border border-purple-500/20 p-3 rounded-xl rounded-tl-none">
+                            <i class="fas fa-robot text-purple-400 mt-0.5"></i>
+                            <div>
+                                <p class="text-purple-300 font-bold mb-1">[💞 Aɢᴇɴᴛ]</p>
+                                <p class="text-green-400">Welcome Developer! I am your code generator & automated traceback engine. Drop your query or ask me to build automated solutions.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form onsubmit="sendAiQuery(event)" class="p-3 bg-[#12141c] border-t pt-border flex items-center gap-2 shrink-0 h-[68px] max-h-[68px] min-h-[68px] w-full box-border m-0">
+                        <input type="text" id="aiInput" placeholder="  Ask Any Question Or Main.py Clear Error..." class="flex-1 bg-[#0c0e14] border pt-border rounded-lg px-4 h-11 max-h-11 text-xs text-cyan-300 outline-none focus:border-purple-500 box-border">
+                        <button type="submit" class="bg-gradient-to-r from-purple-600 to-indigo-600 px-5 h-11 max-h-11 rounded-lg font-bold text-xs uppercase text-gray-300 flex items-center justify-center gap-2 whitespace-nowrap shrink-0 box-border transform-gpu backface-hidden">
+                            <i class="fas fa-paper-plane"></i> Send
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="pt-bg-panel border pt-border rounded-xl p-4 space-y-4 h-fit shrink-0">
+                    <h4 class="text-[10px] font-black uppercase text-gray-400 tracking-widest border-b pt-border pb-2">Qᴜ𝚒ᴄᴋ Aɢᴇɴᴛ D𝚒ᴀɢɴᴏꜱᴛ𝚒ᴄ</h4>
+                    <button onclick="triggerAiMacro('fix_all')" class="w-full bg-purple-600/10 hover:bg-purple-600/20 border border-purple-500/30 text-purple-400 text-left p-3 rounded-lg text-xs font-bold block"><i class="fas fa-magic mr-2"></i> Auto Scan Tracebacks</button>
+                    <button onclick="triggerAiMacro('optimize')" class="w-full bg-blue-600/10 hover:bg-blue-600/20 border border-blue-500/30 text-blue-400 text-left p-3 rounded-lg text-xs font-bold block"><i class="fas fa-bolt mr-2"></i> Speed-Up Script Loops</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="viewProfile" class="hidden">
+            <div class="max-w-2xl mx-auto space-y-4 pb-10">
+                <div class="pt-bg-panel border pt-border rounded-xl p-6 shadow-2xl relative overflow-hidden">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-[#1a4fcc]/10 border border-[#1a4fcc]/40 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-user-shield text-[#1a4fcc] text-2xl"></i>
+                        </div>
+                        <h2 class="text-sm font-bold uppercase tracking-widest text-white">Account Settings</h2>
+                        <p class="text-[10px] text-gray-500 mt-1">Update your hosting credentials</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-[10px] text-gray-500 uppercase font-bold block mb-1">New Username</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-3 flex items-center text-gray-600"><i class="fas fa-user text-[10px]"></i></span>
+                                <input type="text" id="new_user" placeholder="{{ user }}" class="w-full bg-[#0c0e14] border border-[#1c212a] p-3 pl-9 rounded-lg text-xs outline-none focus:border-[#1a4fcc] text-gray-200">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="text-[10px] text-gray-500 uppercase font-bold block mb-1">New Password</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-3 flex items-center text-gray-600"><i class="fas fa-lock text-[10px]"></i></span>
+                                <input type="password" id="new_pass" placeholder="••••••••" class="w-full bg-[#0c0e14] border border-[#1c212a] p-3 pl-9 pr-10 rounded-lg text-xs outline-none focus:border-[#1a4fcc] text-gray-200">
+                                <button onclick="togglePass()" class="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-[#1a4fcc]">
+                                    <i id="eye-icon" class="fas fa-eye text-[12px]"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="updateProfile()" class="w-full pt-btn-blue py-3 rounded-lg font-bold uppercase text-[11px] shadow-lg flex items-center justify-center gap-2 transition-transform active:scale-95 mt-6">
+                        <i class="fas fa-save"></i> Update Credentials
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="pt-bg-panel border pt-border rounded-xl p-4 flex flex-col justify-center">
+                        <h3 class="text-[10px] font-bold text-gray-400 uppercase mb-3 tracking-widest">System Info</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-[10px]"><span class="text-gray-500">Node Status:</span> <span class="text-green-500">Active</span></div>
+                            <div class="flex justify-between text-[10px]"><span class="text-gray-500">Security:</span> <span class="text-blue-400">Encrypted</span></div>
+                            <div class="flex justify-between text-[10px]"><span class="text-gray-500">Version:</span> <span class="text-white">v3.1 Stable</span></div>
+                        </div>
+                    </div>
+
+                    <div class="pt-bg-panel border pt-border rounded-xl p-4">
+                        <h3 class="text-[10px] font-bold text-gray-400 uppercase mb-3 tracking-widest text-center">Social Support</h3>
+                        <div class="flex justify-around items-center h-full gap-2">
+                            <a href="https://t.me/+w5PCPmSjPCQ2Nzhl" target="_blank" class="flex-1 bg-[#24A1DE]/10 border border-[#24A1DE]/30 p-2 rounded-lg text-center hover:bg-[#24A1DE]/20 transition-all">
+                                <i class="fab fa-telegram text-[#24A1DE] text-lg"></i>
+                            </a>
+                            <a href="https://instagram.com/SHADOW_VIP_MODS" target="_blank" class="flex-1 bg-pink-600/10 border border-pink-600/30 p-2 rounded-lg text-center hover:bg-pink-600/20 transition-all">
+                                <i class="fab fa-instagram text-pink-600 text-lg"></i>
+                            </a>
+                            <a href="https://github.com/Manohar81020" target="_blank" class="flex-1 bg-white/5 border border-white/10 p-2 rounded-lg text-center hover:bg-white/10 transition-all">
+                                <i class="fab fa-github text-white text-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="editModal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center p-4 z-50">
+        <div class="bg-[#12141c] w-full max-w-5xl rounded-xl border border-[#30363d] overflow-hidden shadow-2xl">
+            <div class="bg-[#21262d] px-4 py-3 border-b border-[#30363d] flex justify-between items-center">
+                <h3 id="editTitle" class="text-xs font-bold text-white uppercase tracking-widest">Editing</h3>
+                <div class="flex items-center gap-4 text-[10px] font-bold text-gray-400">
+                    <span>MODE: <span id="lang-label" class="text-blue-400">AUTO</span></span>
+                    <button onclick="closeEdit()" class="text-red-500"><i class="fas fa-times text-lg"></i></button>
+                </div>
+            </div>
+            <div class="editor-container">
+                <pre id="highlight-layer" aria-hidden="true"><code id="highlight-code"></code></pre>
+                <textarea id="editor" spellcheck="false" oninput="syncEditor()" onscroll="syncScroll()"></textarea>
+            </div>
+            <div class="p-4 border-t border-[#30363d] flex justify-end gap-3">
+                <button onclick="saveFile()" class="pt-btn-blue px-8 py-2 rounded font-bold text-xs uppercase shadow-lg">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let activeFile = 'main.py';
+        let editingFileName = ''; 
+        let logInterval = null;
+        let lastNotifiedMsg = "";
+        let lastReadCount = 0; 
+
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            background: '#1a1d27',
+            color: '#fff',
+            didOpen: (toast) => { 
+                toast.style.width = '180px';
+                toast.style.fontSize = '12px';
+            }
+        });
+
+        function formatTimeAgo(timeString) {
+            try {
+                const now = new Date();
+                const past = new Date(timeString);
+                if (isNaN(past.getTime())) return timeString;
+                const diffMs = now - past;
+                const diffSecs = Math.floor(diffMs / 1000);
+                const diffMins = Math.floor(diffSecs / 60);
+                const diffHours = Math.floor(diffMins / 60);
+                const diffDays = Math.floor(diffHours / 24);
+
+                if (diffSecs < 60) return "Just now";
+                if (diffMins < 60) return `${diffMins}m ago`;
+                if (diffHours < 24) return `${diffHours}h ago`;
+                return `${diffDays}d ago`;
+            } catch (e) { return timeString; }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const editor = document.getElementById('editor');
+            if(editor) {
+                editor.addEventListener('keydown', function(e) {
+                    if (e.key == 'Tab') {
+                        e.preventDefault();
+                        var start = this.selectionStart;
+                        var end = this.selectionEnd;
+                        this.value = this.value.substring(0, start) + "    " + this.value.substring(end);
+                        this.selectionStart = this.selectionEnd = start + 4;
+                        syncEditor(); 
+                    }
+                });
+            }
+        });
+
+        function deployFromGithub(type) {
+            const url = type === 'pvt' ? document.getElementById('pvtRepoUrl').value : document.getElementById('pubRepoUrl').value;
+            const token = type === 'pvt' ? document.getElementById('pvtGhToken').value : "";
+            const statusDiv = document.getElementById('ghStatus');
+
+            if(!url) { Toast.fire({ icon: 'error', title: 'URL Required!' }); return; }
+            if(type === 'pvt' && !token) { Toast.fire({ icon: 'warning', title: 'Token Required!' }); return; }
+            if(type === 'pvt') localStorage.setItem('gh_token', token);
+            
+            statusDiv.innerHTML = `<p class="text-blue-400 animate-pulse">> Initializing ${type.toUpperCase()} Deployment...</p>`;
+            
+            fetch('/github_deploy', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ repo_url: url, token: token, path: "{{ current_path }}" })
+            })
+            .then(r => r.json())
+            .then(d => {
+                if(d.status === 'success') {
+                    statusDiv.innerHTML += `<p class="text-green-400">> [SUCCESS] Repository synced successfully.</p>`;
+                    Toast.fire({ icon: 'success', title: 'Deployed!' });
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    statusDiv.innerHTML += `<p class="text-red-500">> [ERROR] ${d.msg}</p>`;
+                }
+            });
+        }
+        
+        function syncScroll() {
+            const editor = document.getElementById('editor');
+            const highlightLayer = document.getElementById('highlight-layer');
+            if(editor && highlightLayer) {
+                highlightLayer.scrollTop = editor.scrollTop;
+                highlightLayer.scrollLeft = editor.scrollLeft;
+            }
+        }
+
+        function syncEditor() {
+            const editor = document.getElementById('editor');
+            const highlightCode = document.getElementById('highlight-code');
+            if (!editor || !highlightCode) return;
+
+            let code = editor.value;
+            highlightCode.textContent = code + (code.endsWith('\n') ? ' ' : '');
+            const ext = editingFileName.split('.').pop().toLowerCase();
+            const map = { 'py': 'python', 'js': 'javascript', 'html': 'markup', 'css': 'css', 'json': 'json' };
+            highlightCode.className = `language-${map[ext] || 'clike'}`;
+            if (window.Prism) Prism.highlightElement(highlightCode);
+            syncScroll();
+        }
+
+        function filterFiles(query) {
+            const files = document.querySelectorAll('#fileTable tbody tr.file-row'); 
+            const q = query.toLowerCase();
+            files.forEach(file => {
+                const text = file.innerText.toLowerCase();
+                file.style.display = text.includes(q) ? '' : 'none';
+            });
+        }
+
+        function toggleSearch() {
+            const container = document.getElementById('searchContainer');
+            const input = document.getElementById('searchInput');
+            const icon = document.querySelector('.fa-search, .fa-times');
+
+            if (container.classList.contains('hidden')) {
+                container.classList.remove('hidden');
+                input.focus();
+                if(icon) icon.className = 'fas fa-times text-lg text-red-500 cursor-pointer';
+            } else {
+                container.classList.add('hidden');
+                input.value = ''; 
+                filterFiles('');
+                if(icon) icon.className = 'fas fa-search text-lg text-gray-400 cursor-pointer';
+            }
+        }
+        
+        function showTab(tab) {
+            const tabs = ['console', 'files', 'activity', 'requirements', 'github', 'ai', 'profile'];
+            tabs.forEach(t => {
+                const element = document.getElementById('view' + t.charAt(0).toUpperCase() + t.slice(1));
+                const btn = document.getElementById('t-' + t);
+                if(element) element.classList.add('hidden');
+                if(btn) btn.className = 'text-gray-400 pb-4 mt-4 text-sm uppercase outline-none';
+            });
+
+            const targetView = document.getElementById('view' + tab.charAt(0).toUpperCase() + tab.slice(1));
+            const targetBtn = document.getElementById('t-' + tab);
+            
+            if(targetView) targetView.classList.remove('hidden');
+            if(targetBtn) targetBtn.className = 'pb-4 mt-4 text-sm tab-active uppercase outline-none';
+
+            if(tab === 'github') {
+                const savedToken = localStorage.getItem('gh_token');
+                const tokenInput = document.getElementById('pvtGhToken');
+                if(savedToken && tokenInput) tokenInput.value = savedToken;
+            }
+
+            if(tab === 'activity' || tab === 'requirements' || tab === 'ai') {
+                const contentArea = document.getElementById(tab + 'Content');
+                if(!contentArea) return;
+                
+                fetch(`/${tab}.html`)
+                .then(res => { if(!res.ok) throw new Error(); return res.text(); })
+                .then(html => contentArea.innerHTML = html)
+                .catch(() => {
+                    if(tab === 'activity') {
+                        contentArea.innerHTML = `<div class="p-6 text-xs font-mono text-gray-400"><p class="text-blue-400">[${new Date().toLocaleTimeString()}] System Online</p></div>`;
+                    } else if(tab === 'requirements') {
+                        contentArea.innerHTML = `<div class="p-6 text-xs text-gray-500">Manage dependencies files here.</div>`;
+                    }
+                });
+            }
+        }
+
+        // 🛠️ FIXED CORE STREAM ROUTER TUNNEL
+        function sendAiQuery(event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            const input = document.getElementById('aiInput');
+            if(!input) return;
+
+            const queryText = input.value.trim();
+            if(!queryText) return;
+
+            const logs = document.getElementById('aiChatLogs');
+            
+            const pythonColoredQuery = queryText
+            .replace(/\b(def|class|if|else|elif|return|for|while|import|from|as|with|try|except|finally|pass|break|continue|lambda|yield|in|is|not|and|or)\b/g, '<span class="text-blue-400">$1</span>')
+            .replace(/\b(True|False|None)\b/g, '<span class="text-purple-400">$1</span>')
+            .replace(/\b(\d+)\b/g, '<span class="text-yellow-400">$1</span>')
+            .replace(/\b(hi|hello|hlwbhh|skj|onthrs)\b/gi, '<span class="text-green-400 font-mono">$1</span>');
+            
+            
+            const userTemplate = `
+                <div class="flex gap-3 max-w-[85%] bg-blue-600/10 border border-blue-500/20 p-3 rounded-xl rounded-tr-none ml-auto mb-3 shrink-0">
+                    <div class="text-right w-full">
+                        <p class="text-blue-300 font-bold mb-1 text-[11px]">[${document.body.innerHTML.match(/Uꜱᴇʀ:\s*([^\n<]+)/)?.[1] || 'Developer'}]</p>
+                         <p class="text-xs font-mono">${pythonColoredQuery}</p>
+                    </div>
+                </div>`;
+            logs.insertAdjacentHTML('beforeend', userTemplate);
+            
+            input.value = '';
+            input.focus();
+            logs.scrollTop = logs.scrollHeight;
+
+            const aiResponseId = 'ai_' + Date.now();
+            const aiTemplate = `
+                <div class="flex gap-3 max-w-[90%] bg-purple-600/10 border border-purple-500/20 p-3 rounded-xl rounded-tl-none mb-3 shrink-0 relative group" id="${aiResponseId}">
+                    <i class="fas fa-robot text-purple-400 mt-0.5 text-xs"></i>
+                    <div class="w-full">
+                        <div class="flex justify-between items-start">
+                            <div class="ai-status-log font-mono text-[10px] text-yellow-500 mb-1 animate-pulse">
+                                ⚙️ [SYSTEM LOG]: Analyzing query intent...
+                            </div>
+                            <button onclick="copyChatText('${aiResponseId}')" class="copy-btn hidden group-hover:block absolute top-2 right-2"><i class="fas fa-copy"></i> Copy</button>
+                        </div>
+                        <p class="text-purple-300 font-bold mb-1 text-[11px]">[💞 Aɢᴇɴᴛ Rᴇꜱᴩᴏɴꜱᴇ]</p>
+                        <div class="ai-text-content text-green-400 text-xs font-mono whitespace-pre-wrap"><span class="inline-block w-2 h-3 bg-purple-500 animate-ping"></span> Syncing Response...</div>
+                    </div>
+                </div>`;
+            logs.insertAdjacentHTML('beforeend', aiTemplate);
+            logs.scrollTop = logs.scrollHeight;
+
+            const responseWrapper = document.getElementById(aiResponseId);
+            const statusLog = responseWrapper.querySelector('.ai-status-log');
+            const textContent = responseWrapper.querySelector('.ai-text-content');
+
+            let currentMode = "chat"; 
+            let isFirstToken = true;
+            let fullResponseText = ""; 
+
+            fetch('/api/ai-assistant', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: queryText, current_file: typeof activeFile !== 'undefined' ? activeFile : "main.py" })
+            })
+            .then(response => {
+                if(!response.ok) throw new Error(`Status: ${response.status}`);
+                
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let streamBuffer = "";
+
+                function readStreamChunks() {
+                    return reader.read().then(({ done, value }) => {
+                        if (done) {
+                            if (currentMode === "code") {
+                                statusLog.innerHTML = "✔️ [SYSTEM LOG]: Patched successfully.";
+                            } else if(fullResponseText.includes("📦") || fullResponseText.includes("⚙️")) {
+                                statusLog.innerHTML = "📦 [SYSTEM LOG]: Pipeline installation finished.";
+                            } else {
+                                statusLog.style.display = "none"; 
+                            }
+                            statusLog.classList.remove('animate-pulse');
+                            return;
+                        }
+
+                        streamBuffer += decoder.decode(value, { stream: true });
+                        const lines = streamBuffer.split("\n");
+                        streamBuffer = lines.pop();
+
+                        lines.forEach(line => {
+                            let cleanLine = line.trim();
+                            if (cleanLine.startsWith("data: ")) {
+                                try {
+                                    const rawJson = cleanLine.substring(6).trim();
+                                    if(rawJson === "[DONE]") return;
+                                    
+                                    const parsed = JSON.parse(rawJson);
+                                    
+                                    if (parsed.mode) {
+                                        currentMode = parsed.mode;
+                                        if (currentMode === "code") {
+                                            statusLog.innerHTML = "⚡ [SYSTEM LOG]: Code loop compilation patch...";
+                                            statusLog.style.color = "#a855f7";
+                                        } else {
+                                            statusLog.innerHTML = "💬 [SYSTEM LOG]: Normal query sequence.";
+                                            statusLog.style.color = "#6b7280";
+                                        }
+                                        return;
+                                    }
+
+                                    if (parsed.token) {
+                                        if (isFirstToken) {
+                                            textContent.innerHTML = ""; 
+                                            isFirstToken = false;
+                                        }
+                                        
+                                        fullResponseText += parsed.token;
+                                        
+                                        // যদি পিপ লাইভ ইনস্টলেশন লগ হয়, মার্কডাউন ছাড়াই রেন্ডার করা ভালো
+                                        if (fullResponseText) {
+                                    const coloredLines = fullResponseText.split("\n").map(l => {
+                                        const lineTrimmed = l.trim();  // ✅ rename to avoid conflict
+                                        const lineLower = l.toLowerCase();
+                                        if (lineLower.includes("warning")) return `<span class="text-red-500 font-mono">${l}</span>`;
+                                        if (lineLower.includes("name")) return `<span class="text-red-500 font-mono">${l}</span>`;
+                                        if (lineLower.includes("error")) return `<span class="text-red-500 font-mono">${l}</span>`;
+                                        if (lineLower.includes("info")) return `<span class="text-rose-800 font-mono">${l}</span>`; 
+                                        if (lineLower.includes("collecting")) return `<span class="text-cyan-400 font-mono">${l}</span>`;
+                                        if (lineTrimmed.includes("⚠️")) return `<span class="text-red-500 font-mono">${lineTrimmed}</span>`;
+                                        if(l.includes("⚙️")) return `<span class="text-yellow-200 font-mono">${l}</span>`;
+                                        if(l.includes("📥")) return `<span class="text-yellow-200 font-mono">${l}</span>`;   
+                                        if(l.includes("♻️")) return `<span class="text-green-400 font-mono">${l}</span>`;        
+                                        if(l.includes("🌀")) return `<span class="text-green-400 font-mono">${l}</span>`;         
+                                        if(l.includes("🎉")) return `<span class="text-green-400 font-mono">${l}</span>`;                                
+                                        if(l.includes("📦")) return `<span class="text-green-400 font-mono">${l}</span>`;
+                                        if (lineTrimmed.includes("🚀")) return `<span class="text-green-200 font-mono">${lineTrimmed}</span>`;
+                                        
+                                        if (lineTrimmed.includes("💾")) return `<span class="text-purple-400 font-mono">${lineTrimmed}</span>`;
+                                        if (lineTrimmed.includes("🏃‍♂️")) return `<span class="text-amber-400 font-mono">${lineTrimmed}</span>`;    
+                                        if(l.includes("❌")) return `<span class="text-red-500 font-mono">${l}</span>`; // full dark red 
+                                        if(l.includes("💾")) return `<span class="text-purple-400 font-mono">${l}</span>`;   // fixed / saved code
+                                        if(l.includes("✔️")) return `<span class="text-lime-400 font-mono">${l}</span>`;
+                                        return `<span class="text-green-400 font-mono">${l}</span>`;
+                                    }).join("<br>");
+                                    textContent.innerHTML = coloredLines;
+                                } else if(window.marked) {
+                                    textContent.innerHTML = marked.parse(fullResponseText);
+                                    if(window.Prism){
+                                        textContent.querySelectorAll('pre code').forEach(block => Prism.highlightElement(block));
+                                    }
+                                } else {
+                                    textContent.innerText = fullResponseText;
+                                }
+                                logs.scrollTop = logs.scrollHeight;
+                            }
+                                } catch (e) {}
+                            }
+                        });
+                        return readStreamChunks();
+                    });
+                }
+                return readStreamChunks();
+            })
+            .catch(err => {
+                if(statusLog) {
+                    statusLog.innerHTML = "❌ [SYSTEM LOG]: Tunnel failed.";
+                    statusLog.classList.remove('animate-pulse');
+                    statusLog.style.color = "#ef4444";
+                }
+                if(textContent) {
+                    textContent.innerHTML = `<span class="text-red-500">Error: ${err.message}</span>`;
+                }
+            });
+        }
+
+        function copyChatText(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            const textContentDiv = container.querySelector('.ai-text-content');
+            if (!textContentDiv) return;
+            const codeBlock = textContentDiv.querySelector('pre code');
+            const textToCopy = codeBlock ? codeBlock.innerText : textContentDiv.innerText;
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                Toast.fire({ icon: 'success', title: 'Copied to clipboard!' });
+            }).catch(() => {
+                Toast.fire({ icon: 'error', title: 'Copy failed!' });
+            });
+        }
+
+        function triggerAiMacro(type) {
+            const mockPrompt = type === 'fix_all' ? 'Scan logs and provide runtime logs configuration patch for main.py' : 'Optimize performance structures loops';
+            const input = document.getElementById('aiInput');
+            if(input) {
+                input.value = mockPrompt;
+                sendAiQuery(null);
+            }
+        }
+
+        function clearAiChat() {
+            document.getElementById('aiChatLogs').innerHTML = `
+                <div class="flex gap-3 max-w-[85%] bg-purple-600/10 border border-purple-500/20 p-3 rounded-xl rounded-tl-none mb-3 shrink-0">
+                    <i class="fas fa-robot text-purple-400 mt-0.5 text-xs"></i>
+                    <div>
+                        <p class="text-purple-300 font-bold mb-1 text-[11px]">[💞 Aɢᴇɴᴛ]</p>
+                        <p class="text-green-400 text-xs font-mono">Chat history cleared.</p>
+                    </div>
+                </div>`;
+        }
+
+        // 🚀 Admin Account Sync Profiler
+        function updateProfile() {
+            const newUser = document.getElementById('new_user').value.trim();
+            const newPass = document.getElementById('new_pass').value.trim();
+
+            if (!newUser && !newPass) {
+                Toast.fire({ icon: 'warning', title: 'Credentials Required!' });
+                return;
+            }
+
+            Swal.fire({
+                title: 'Updating...',
+                text: 'Please wait',
+                allowOutsideClick: false,
+                didOpen: () => { Swal.showLoading(); }
+            });
+
+            fetch('/update_profile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: newUser, password: newPass })
+            })
+            .then(res => res.json())
+            .then(data => {
+                Swal.close();
+                if (data.status === 'success') {
+                    Swal.fire({ icon: 'success', title: 'Success!', text: data.msg, timer: 2000, showConfirmButton: false })
+                    .then(() => window.location.reload());
+                } else {
+                    Swal.fire('Error', data.msg, 'error');
+                }
+            })
+            .catch(() => Swal.fire('Error', 'Server Profile sync error!', 'error'));
+        }
+
+        function setFile(name) {
+            activeFile = name;
+            document.getElementById('currentPathDisplay').innerText = '/' + name;
+            Toast.fire({ icon: 'info', title: 'Selected: ' + name });
+        }
+        
+        function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            if (!file) return;
+            Toast.fire({ icon: 'info', title: 'Uploading...' });
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('path', '{{ current_path }}');
+            fetch('/upload', { method: 'POST', body: formData })
+            .then(r => r.json()).then(d => {
+                Toast.fire({ icon: d.status === 'success' ? 'success' : 'error', title: d.msg });
+                if(d.status === 'success') setTimeout(() => location.reload(), 1000);
+            });
+        }
+
+        function togglePass() {
+            const passInput = document.getElementById('new_pass');
+            const eyeIcon = document.getElementById('eye-icon');
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                passInput.type = 'password';
+                eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+        
+        function goBack() {
+            let path = "{{ current_path }}";
+            let parts = path.split('/');
+            parts.pop();
+            window.location.href = '/?path=' + parts.join('/');
+        }
+
+        // 🚀 Process Automation Engine Configurations Controllers
+        function control(action) {
+            fetch(`/${action}/${activeFile}`).then(r => r.json()).then(d => {
+                if(d.status === 'success') {
+                    Toast.fire({ icon: 'success', title: d.msg });
+                    if(action === 'stop' || action === 'restart') {
+                        document.getElementById('logs').innerText = "Cleaning logs...";
+                    }
+                    if(action === 'run' || action === 'restart') startLogUpdate(activeFile);
+                    if(action === 'stop' && logInterval) clearInterval(logInterval);
+                } else {
+                    Toast.fire({ icon: 'error', title: d.msg });
+                }
+            });
+        }
+
+        // 🚀 Notification System Functions Tracker
+        function checkNotifications() {
+            fetch('/get_latest_notif').then(res => res.json()).then(data => {
+                const countBadge = document.getElementById('notif-count');
+                const currentTotal = data.all_msgs ? data.all_msgs.length : 0;
+
+                if (currentTotal > lastReadCount) {
+                    countBadge.innerText = currentTotal - lastReadCount;
+                    countBadge.classList.remove('hidden');
+                } else {
+                    countBadge.classList.add('hidden');
+                }
+            }).catch(() => {});
+        }
+
+        function showNotifications() {
+            fetch('/get_latest_notif')
+                .then(res => res.json())
+                .then(data => {
+                    let msgList = "";
+                    const totalMsgs = data.all_msgs ? data.all_msgs.length : 0;
+
+                    if(totalMsgs > 0) {
+                        data.all_msgs.forEach(m => {
+                            const relativeTime = formatTimeAgo(m.time);
+                            msgList += `
+                            <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 16px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                                    <span style="color: #4483eb; font-size: 12px; font-weight: bold;"><i class="fas fa-bullhorn mr-1"></i> Broadcast</span>
+                                    <span style="color: #565f89; font-size: 10px; font-family: monospace;">${relativeTime}</span>
+                                </div>
+                                <div style="color: #e6edf3; font-size: 12px; line-height: 1.6; word-break: break-word;">${m.text}</div>
+                            </div>`;
+                        });
+                    } else {
+                        msgList = `<div style="text-align:center; padding:30px; color:#565f89;">No new announcements.</div>`;
+                    }
+
+                    Swal.fire({
+                        title: `<div style="text-align: left;"><h2 style="font-size: 16px; font-weight: 700; color: #fff; margin:0;">Notifications</h2></div>`,
+                        html: `<div style="max-height: 300px; overflow-y: auto; text-align: left;">${msgList}</div>`,
+                        background: '#0c0e14',
+                        showConfirmButton: false,
+                        showCloseButton: true,
+                        closeButtonHtml: '<i class="fas fa-times" style="font-size: 12px; color: #565f89;"></i>',
+                        width: '320px',
+                        willClose: () => {
+                            lastReadCount = totalMsgs; 
+                            document.getElementById('notif-count').classList.add('hidden');
+                        }
+                    });
+                });
+        }
+
+        setInterval(checkNotifications, 10000);
+
+        // 🚀 Command Shell Pipeline Executions Manager
+        function sendCmd() {
+            let inp = document.getElementById('cmdInput');
+            let val = inp.value.trim();
+            if(!val) return;
+
+            document.getElementById('logs').innerText += `\n» ${val}`;
+
+            fetch('/command', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({cmd: val, path: "{{ current_path }}"})
+            }).then(r => r.json()).then(d => {
+                if(d.status === 'success') {
+                    Toast.fire({ icon: 'success', title: d.msg || 'Executed' });
+                    startLogUpdate('terminal'); 
+                } else {
+                    Toast.fire({ icon: 'error', title: 'Execution failed' });
+                }
+            });
+            inp.value = '';
+        }
+
+        function editFile(name) {
+            editingFileName = name;
+            document.getElementById('editTitle').innerText = "Editing: " + name;
+            fetch('/edit/' + name + '?path={{ current_path }}').then(r => r.json()).then(data => {
+                const editor = document.getElementById('editor');
+                editor.value = data.content;
+                document.getElementById('editModal').classList.remove('hidden');
+                setTimeout(() => { syncEditor(); syncScroll(); }, 50);
+            });
+        }
+
+        function saveFile() {
+            const content = document.getElementById('editor').value;
+            fetch('/edit/' + editingFileName, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({content: content, path: "{{ current_path }}"})
+            }).then(r => r.json()).then(d => {
+                if(d.status === 'success') { 
+                    closeEdit();
+                    Swal.fire({ icon: 'success', title: 'File Saved!', timer: 1000, showConfirmButton: false });
+                }
+            });
+        }
+
+        function closeEdit() { document.getElementById('editModal').classList.add('hidden'); }
+
+        function actionPrompt(type) {
+            Swal.fire({
+                title: 'Create ' + type,
+                input: 'text',
+                background: '#12141c',
+                color: '#fff',
+                showCancelButton: true,
+                confirmButtonColor: '#1a4fcc'
+            }).then((result) => {
+                if (result.value) {
+                    fetch(type === 'file' ? '/create_file' : '/create_folder', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name: result.value, path: "{{ current_path }}" })
+                    }).then(() => location.reload());
+                }
+            });
+        }
+
+        function deleteFile(name) {
+            Swal.fire({
+                title: 'Delete confirmation',
+                text: "Remove " + name + "?",
+                icon: 'warning',
+                background: '#12141c',
+                color: '#fff',
+                showCancelButton: true,
+                confirmButtonColor: '#e53e3e',
+                confirmButtonText: 'Confirm'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/delete/' + name).then(() => location.reload());
+                }
+            });
+        }
+
+        function renameFile(name) {
+            Swal.fire({
+                title: 'Rename target',
+                input: 'text',
+                inputValue: name,
+                background: '#12141c',
+                color: '#fff',
+                showCancelButton: true
+            }).then((result) => {
+                if (result.value && result.value !== name) {
+                    fetch('/rename', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({old: name, new: result.value})
+                    }).then(() => location.reload());
+                }
+            });
+        }
+
+        // 🚀 Live Dynamic Logs Parsing Colorizer Filters
+        function startLogUpdate(file) {
+            if (logInterval) clearInterval(logInterval);
+            const logs = document.getElementById('logs');
+
+            logInterval = setInterval(() => {
+                fetch(`/logs/${file}`).then(r => r.json()).then(d => {
+                    if (logs && d.logs) {
+                        let lines = d.logs.split('\n').map(line => {
+                            if (line.trim() === "") return "";
+                            let low = line.toLowerCase();
+                            let style = "font-family: 'Fira Code', monospace !important;";
+                            
+                            if (low.includes('error') || low.includes('fail')) {
+                                return `<div style="${style}" class="text-red-500">❌ ${line}</div>`;
+                            } else if (low.includes('warning') || low.includes('satisfied') || low.includes('already exists')) {
+                                return `<div style="${style} color: #f1e05a;">⚠️ ${line}</div>`;
+                            } else if (line.startsWith('[')) {
+                                return `<div style="${style} color: #9ece6a;">${line}</div>`;
+                            }
+                            return `<div style="${style}" class="text-green-400">${line}</div>`;
+                        }).join('');
+                        
+                        logs.innerHTML = lines;
+                        logs.scrollTop = logs.scrollHeight;
+                    }
+                });
+            }, 1000);
+        }
+
+        // 🚀 Server Telemetry Stat Loop Updates Engine
+        setInterval(() => {
+            fetch(`/stats?file=${activeFile}`).then(r => r.json()).then(d => {
+                document.getElementById('cpu').innerText = d.cpu || "0.00%";
+                document.getElementById('ram').innerText = d.ram || "0 MiB";
+                document.getElementById('uptime').innerText = d.uptime || "Offline";
+                document.getElementById('net_in').innerText = d.net_in || "0.00 MiB";
+                document.getElementById('net_out').innerText = d.net_out || "0.00 MiB";
+            }).catch(() => {});
+        }, 3000);
+        
+        // 🚀 ChartJS Telemetry Graphs Initializer Script
+        const createChart = (canvasId, label, color) => {
+            return new Chart(document.getElementById(canvasId), {
+                type: 'line',
+                data: {
+                    labels: Array(20).fill(''),
+                    datasets: [{
+                        label: label,
+                        data: Array(20).fill(0),
+                        borderColor: color,
+                        backgroundColor: color + '11',
+                        borderWidth: 1.5,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { display: false },
+                        y: { 
+                            beginAtZero: true, 
+                            grid: { color: '#1c212a' },
+                            ticks: { color: '#4b5563', font: { size: 8 } }
+                        }
+                    },
+                    animation: { duration: 1000, easing: 'linear' }
+                }
+            });
+        };
+
+        const cpuChart = createChart('cpuChart', 'CPU', '#3b82f6');
+        const ramChart = createChart('ramChart', 'RAM', '#06b6d4');
+        const netChart = createChart('netChart', 'NET', '#9d50bb');
+
+        setInterval(() => {
+            const charts = [cpuChart, ramChart, netChart];
+            charts.forEach(chart => {
+                chart.data.datasets[0].data.shift();
+                chart.data.datasets[0].data.push(Math.floor(Math.random() * 45) + 5);
+                chart.update('none'); 
+            });
+        }, 1000);        
+    </script>
+</body>
+</html>
+
+
+

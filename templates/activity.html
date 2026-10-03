@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { background-color: #0b0d11; color: #e5e7eb; font-family: 'Inter', sans-serif; }
+        h1, h2, span, p.font-mono, .time-stamp, .action-label { font-family: 'Orbitron', sans-serif; }
+        .activity-container { animation: slideUp 0.4s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .gradient-title { background: linear-gradient(135deg, #60a5fa 0%, #ffffff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block; text-transform: uppercase; letter-spacing: 2px; }
+        .activity-row { border: 1px solid rgba(255, 255, 255, 0.03); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); background: rgba(255, 255, 255, 0.01); display: flex; align-items: center; padding: 1rem 1.25rem; margin-bottom: 0.75rem; }
+        .activity-row:hover { background: rgba(26, 79, 204, 0.08); border-left: 4px solid #3b82f6; transform: translateX(5px); }
+        .glow-icon { filter: drop-shadow(0 0 8px currentColor); }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 10px; }
+        .node-trace { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="p-4 custom-scrollbar">
+
+<div class="w-full max-w-5xl mx-auto activity-container">
+    <div class="flex justify-between items-center mb-8 border-b border-white/5 pb-4">
+        <div>
+            <h1 class="text-base font-black tracking-widest gradient-title">System Activity</h1>
+            <p class="text-[9px] text-gray-600 mt-1 uppercase tracking-[0.3em]">Live Feed : <span class="text-blue-500/80 font-bold">{{ user }}</span></p>
+        </div>
+    </div>
+
+    <div id="logs-wrapper">
+        {% for act in activities %}
+        <div class="activity-row rounded-lg">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-5 border border-white/10 bg-white/5 shadow-inner">
+                {% if 'run' in act.action or 'login' in act.action %}
+                    <i class="fas {% if 'run' in act.action %}fa-play{% else %}fa-shield-halved{% endif %} text-green-400 glow-icon text-sm"></i>
+                {% elif 'upload' in act.action %}
+                    <i class="fas fa-file-export text-green-400 glow-icon text-sm"></i>
+                {% elif 'create' in act.action or 'crate' in act.action %}
+                    <i class="fas fa-file-circle-plus text-green-400 glow-icon text-sm"></i>
+                {% elif 'delete' in act.action %}
+                    <i class="fas fa-trash-arrow-up text-red-500 glow-icon text-sm"></i>
+                {% elif 'logout' in act.action or 'stop' in act.action %}
+                    <i class="fas fa-power-off text-red-500 glow-icon text-sm"></i>
+                {% elif 'edit' in act.action %}
+                    <i class="fas fa-file-signature text-yellow-400 glow-icon text-sm"></i>
+                {% elif 'folder' in act.action %}
+                    <i class="fas fa-folder-open text-blue-400 glow-icon text-sm"></i>
+                {% elif 'file' in act.action %}
+                    <i class="fas fa-file-lines text-gray-400 glow-icon text-sm"></i>
+                {% else %}
+                    <i class="fas fa-bolt-lightning text-yellow-400 glow-icon text-sm"></i>
+                {% endif %}
+            </div>
+
+            <div class="flex-1">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="action-label text-[11px] font-bold tracking-widest uppercase">
+                            <span class="text-blue-400">{{ user }}</span> 
+                            <span class="mx-1 text-gray-600">/</span> 
+                            
+                            <span class="{% if 'run' in act.action or 'login' in act.action or 'create' in act.action or 'upload' in act.action or 'crate' in act.action %}text-green-400
+                                       {% elif 'delete' in act.action or 'stop' in act.action or 'logout' in act.action %}text-red-500
+                                       {% elif 'edit' in act.action %}text-yellow-400
+                                       {% else %}text-gray-100{% endif %}">
+                                {{ act.action }}
+                            </span>
+                        </span>
+                        <p class="text-[13px] text-gray-400 mt-1 font-medium leading-relaxed font-sans">{{ act.details }}</p>
+                    </div>
+                    <span class="time-stamp text-[9px] text-gray-500 font-bold bg-[#12141c] px-2 py-1 rounded border border-white/5 tracking-tighter flex items-center gap-1">
+                        <i class="far fa-clock text-[10px]"></i> {{ act.time }} <span class="ml-1 text-blue-500/50">IST</span>
+                    </span>
+                </div>
+                
+                <div class="flex items-center mt-2.5 gap-2">
+                    <div class="w-1 h-1 rounded-full animate-pulse 
+                        {% if 'run' in act.action or 'login' in act.action or 'create' in act.action or 'upload' in act.action or 'crate' in act.action %}bg-green-500
+                        {% elif 'delete' in act.action or 'stop' in act.action or 'logout' in act.action %}bg-red-500
+                        {% elif 'edit' in act.action %}bg-yellow-400
+                        {% else %}bg-blue-500{% endif %}">
+                    </div>
+                    <p class="node-trace text-[9px] text-gray-600 uppercase tracking-widest">Node Trace: <span class="text-gray-500">{{ act.ip }}</span></p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+</body>
+</html>
