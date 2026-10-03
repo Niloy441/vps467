@@ -1,8 +1,8 @@
 {
 
-  "root": {
+  "admin": {
 
-    "p": "root",
+    "p": "admin",
 
     "status": "active",
 
