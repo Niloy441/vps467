@@ -86,3 +86,7 @@ ADMIN_SECRET_KEY=${{secret(64, "abcdef0123456789")}}
 ```
 
 > **Note:** Railway-এর `secret()` syntax আপনার নির্দিষ্ট deployment context-এ supported কি না, Railway-এর current documentation দেখে নিশ্চিত করুন।
+
+```env
+railway start commund = gunicorn --bind 0.0.0.0:$PORT app:app
+```
