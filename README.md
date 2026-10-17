@@ -89,4 +89,7 @@ ADMIN_SECRET_KEY=${{secret(64, "abcdef0123456789")}}
 
 ```env
 railway start commund = gunicorn --bind 0.0.0.0:$PORT app:app
+GITHUB_TOKEN
+GITHUB_REPO
+OPENROUTER_API_KEY
 ```
